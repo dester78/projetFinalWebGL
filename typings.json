@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "stats.js": "registry:dt/stats.js#0.16.0+20161123230554",
     "three": "registry:dt/three#0.84.0+20170323144537",
     "three-orbitcontrols": "registry:dt/three-orbitcontrols#0.0.0+20160704010734"
   },

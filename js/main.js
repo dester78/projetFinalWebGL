@@ -1,129 +1,114 @@
-//<reference path="typings/globals/three/index.d.ts" />
-if ( WEBGL.isWebGLAvailable() === false ) {
-
-    document.body.appendChild( WEBGL.getWebGLErrorMessage() );
-
-}
-
-var renderer, scene, camera;
 
 
-var spotLight, lightHelper, shadowCameraHelper;
+var camera, scene, renderer;
+var geometry, material, mesh;
+var objects = [];
+var raycaster;
 
-var gui;
 
-var centerThree;
 
+
+
+// POINTERLOCK FUNCTIONS
+compatibilityControl();
+initWindowListener();
+initMovementListener();
+
+
+
+init();
+animate();
+
+var prevTime = performance.now();
+var velocity = new THREE.Vector3();
 function init() {
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+    raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+    console.log(camera);
 
+    var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+    light.position.set( 0.5, 1, 0.75 );
+    scene.add( light );
+    controls = new THREE.PointerLockControls( camera );
+    scene.add( controls.getObject() );
+   
+
+    const planeGeometry = new THREE.PlaneGeometry(150, 150, 480, 960);
+
+
+    const planeMaterial = new THREE.MeshPhongMaterial({
+    specular: 0xfb8717,         // Specular color of the material (light)
+    color: 0xFF4E50,            // Geometry color in hexadecimal
+    emissive: 0xFF4E50,         // Emissive color of the material (dark)
+    shininess: 30,              // How shiny the specular highlight is
+    shading: THREE.FlatShading  // NoShading, FlatShading or SmoothShading
+    });
+    
+
+    
+
+
+    planeGeometry.translate( 0, 0, 8 );
+    planeGeometry.rotateX( -Math.PI / 2 );//Fait pivoter le planeGeometry pour afficher sa partie visible à plat 
+    planeGeometry.computeBoundingBox();
+    
+    
+    //Génère aléatoirement des vecteurs pour avoir un terrain avec du relief, si les vecteurs se situes en dehors de la circonférence du cercle de l'ile ils ne sont pas modifiés
+    planeGeometry.vertices.map(function (vertex,index,vertices) {
+        const center= new THREE.Vector3;
+        if(vertex.distanceTo(planeGeometry.boundingBox.getCenter(center))<=planeGeometry.parameters.width/2){
+            vertex.x += .5 + Math.random() / 10;
+            vertex.y += .5 + Math.random() / 10;
+            vertex.z += .5 + Math.random() / 5;
+        }
+        
+        return vertex;
+        });
+        console.log(planeGeometry);
+
+        
+    
+
+    
+    // Update geometry.
+    planeGeometry.computeFaceNormals();
+
+
+
+    
+    
+    
+ 
+    
+    console.log(planeGeometry.boundingBox.getCenter())
+
+        camera.position=planeGeometry.boundingBox.getCenter()
+    
+    // Create plane
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+    scene.add(plane);
+    console.log(plane);
+
+    //Renderer
     renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor( 0xffffff );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
-
-    scene = new THREE.Scene();
-
-    camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 1000 );
-    camera.position.set( 65, 8, - 10 );
-
-    var controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.addEventListener( 'change', render );
-    controls.minDistance = 20;
-    controls.maxDistance = 500;
-    controls.enablePan = false;
-
-    var ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
-    scene.add( ambient );
-
-    spotLight = new THREE.SpotLight( 0xffffff, 1 );
-    spotLight.position.set( 300, 100, 100 );
-    spotLight.angle = Math.PI / 4;
-    spotLight.penumbra = 0.05;
-    spotLight.decay = 2;
-    spotLight.distance = 800;
-
-    spotLight.castShadow = true;
-    spotLight.shadow.mapSize.width = 1024;
-    spotLight.shadow.mapSize.height = 1024;
-    spotLight.shadow.camera.near = 10;
-    spotLight.shadow.camera.far = 200;
-    scene.add( spotLight );
-
-    var planeMaterial = new THREE.MeshPhongMaterial( { color: 0x808080, dithering: true } );
-
-    var planeGeometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
-
-    var planeMesh = new THREE.Mesh( planeGeometry, planeMaterial );
-    planeMesh.position.set( 0, - 1, 0 );
-    planeMesh.rotation.x = - Math.PI * 0.5;
-    planeMesh.receiveShadow = true;
-    scene.add( planeMesh );
-
-
-    var loader = new THREE.GLTFLoader();
-    loader.setDRACOLoader( new THREE.DRACOLoader() );
-    THREE.DRACOLoader.setDecoderPath( '../../examples/js/libs/draco' )
-    
-    loader.setPath('models/centerThreeGLTF/');
-
-    loader.load( 'scene.gltf', function ( gltf ) {
-
-        console.log(gltf);
-            gltf.scene.traverse( function ( child ) {
-
-            if ( child.isMesh ) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-                console.log(child);
-                console.log(child.name);
-            }
-
-        } );
-
-        scene.add( gltf.scene );
-
-    }, undefined, function ( error ) {
-
-        console.error( error );
-
-    } );
-    
-    // 	scene.add( centerThree.scene );
-
-    // }, undefined, function ( element ) {
-
-    // 	// console.error( element );
-
-    // } );
-
-    window.addEventListener( 'resize', onResize, false );
-
+    window.addEventListener( 'resize', onWindowResize, false );
 }
-
-
-
-
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
-
-function render() {
-
-    renderer.render( scene, camera );
-
-}
-
 function animate() {
     requestAnimationFrame( animate );
     if ( controlsEnabled ) {
-        raycaster.ray.origin.copy( controls.getObject().position );
+        raycaster.ray.origin.copy( controls.getObject().position );//Fixe le raycaster sur la position de la caméra
         raycaster.ray.origin.y -= 10;
         var intersections = raycaster.intersectObjects( objects );
         var isOnObject = intersections.length > 0;
@@ -153,6 +138,7 @@ function animate() {
     renderer.render( scene, camera );
 }
 
-init();
 
-render();
+
+
+
