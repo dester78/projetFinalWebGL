@@ -13,9 +13,9 @@ compatibilityControl();
 initWindowListener();
 initMovementListener();
 
-var ground= new Ground(0,10,-2,400,400,480,960,0xfb8717,0xFF4E50,0xFF4E50,30);
+var ground= new Ground(0,10,-2,300,300,480,960,0xfb8717,0xFF4E50,0xFF4E50,30);
 var ocean= new Ocean(0,0,0,1500,1500,90,90,30,0x00aeff,0x0023b9,60,2);
-var threeGroup= new Model3DGroup(0,ground.y,0,'models/centerThreeGLTF/','scene.gltf','threes',10);
+var threeGroup= new Model3DGroup(0,ground.y,0,'models/centerThreeGLTF/','scene.gltf','threes',30,3);
 
 init();
 animate();

@@ -1,3 +1,5 @@
+// import { Vector3 } from "three";
+
 ///import { Object3D } from "../libs/three";
 
 
@@ -183,6 +185,7 @@ class Model3DGroup{
     get name(){return this._name;}
     get numberOfElement(){return this._numberOfElement;}
     get manager(){return this._manager;}
+    get distribution(){return this._distribution;}
 
 
     get modelGroup(){return this._modelGroup;}
@@ -244,27 +247,36 @@ class Model3DGroup{
 
     randomizeElementPosition(ground){
 
-        // this.modelGroup.traverse(function(child){
-        //     console.log(child);
-        // })
-        // console.log(this.modelGroup.children[0]);
         var box = new THREE.Box3().setFromObject(this.modelGroup.children[0]);
+        var boxSize = new THREE.Vector3();
+         box.getSize(boxSize)
+
+        var distribution = this.distribution
         this.modelGroup.children.map(function(element,index,arrElement){
             var collisionBool=true;
+            
+            var sign=index%2==0?1:-1
             while(collisionBool==true){
-                element.position.x=0;
-                element.position.y=0;
-                element.position.x+=Math.random()*ground.groundCircleRadius;
-                element.position.x*= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                element.position.z+=Math.random()*ground.groundCircleRadius;
-                element.position.z*= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                console.log(element.position.distanceTo(ground.groundCenter));
-                console.log(ground.groundCircleRadius);
-                if(element.position.distanceTo(ground.groundCenter)<ground.groundCircleRadius){
-                    console.log(ground);
-                    collisionBool=false;
 
-                }
+                var tmpPosition = new THREE.Vector3(0,element.position.y,0);
+                tmpPosition.x=Math.random()*ground.groundCircleRadius*sign;
+                tmpPosition.z=Math.random()*ground.groundCircleRadius*sign*Math.cos(index*10);
+
+                if(tmpPosition.distanceTo(ground.groundCenter)<ground.groundCircleRadius ){
+                    if(index!=0){
+                        for(var i = 0; i < index ; i++){
+                            if(tmpPosition.distanceTo(arrElement[i].position)>((boxSize.x+boxSize.z)/2)*distribution){
+                                element.position.copy(tmpPosition);
+                                collisionBool=false;
+                            }
+                        }     
+                    }
+                    else{
+                        element.position.copy(tmpPosition);
+                        collisionBool=false
+                    };
+
+                }        
             }
         })
 
