@@ -37,15 +37,15 @@
 			<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - spotlight by <a href="http://master-domain.com" target="_blank" rel="noopener">Master James</a><br />
 		</div>
 
-		<script src="../../build/three.js"></script>
-		<script src="../../examples/js/controls/OrbitControls.js"></script>
+		<script src="libs/three.js"></script>
+		<script src="libs/OrbitControls.js"></script>
 
-		<script src="../../examples/js/libs/dat.gui.min.js"></script>
+		<script src="libs/dat.gui.min.js"></script>
 
-		<script src="../../examples/js/WebGL.js"></script>
+		<script src="libs/WebGL.js"></script>
 
-		<script src="../../examples/js/loaders/GLTFLoader.js"></script>
-		<script src="../../examples/js/loaders/DRACOLoader.js"></script>
+		<script src="libs/GLTFLoader.js"></script>
+		<script src="libs/DRACOLoader.js"></script>
 
 
 		
@@ -119,7 +119,7 @@
 
 				var loader = new THREE.GLTFLoader();
 				loader.setDRACOLoader( new THREE.DRACOLoader() );
-				THREE.DRACOLoader.setDecoderPath( '../../examples/js/libs/draco' )
+				THREE.DRACOLoader.setDecoderPath( 'libs/draco' )
 				
 				loader.setPath('models/centerThreeGLTF/');
 

@@ -388,7 +388,7 @@
         0,
         0
       ],
-      "name": "leaf_green.002",
+      "name": "leaf",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.032287530600000003,
@@ -407,7 +407,7 @@
         0,
         0
       ],
-      "name": "leaf_green",
+      "name": "leaf",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.0218616053,
@@ -426,7 +426,7 @@
         0,
         0
       ],
-      "name": "leaf_green.001",
+      "name": "leaf",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.018905723499999999,
@@ -445,7 +445,7 @@
         0,
         0
       ],
-      "name": "leaf_green.004",
+      "name": "leaf",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0,
@@ -464,7 +464,7 @@
         0,
         0
       ],
-      "name": "leaf_green.003",
+      "name": "leaf",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.033206474,
@@ -855,7 +855,7 @@
   "scene": 0,
   "scenes": [
     {
-      "name": "OSG_Scene",
+      "name": "three",
       "nodes": [
         0
       ]

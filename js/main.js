@@ -1,7 +1,6 @@
 
 
 var camera, scene, renderer;
-var geometry, material, mesh;
 var objects = [];
 var raycaster;
 
@@ -14,83 +13,28 @@ compatibilityControl();
 initWindowListener();
 initMovementListener();
 
-
+var ground= new Ground(0,10,-2,400,400,480,960,0xfb8717,0xFF4E50,0xFF4E50,30);
+var ocean= new Ocean(0,0,0,1500,1500,90,90,30,0x00aeff,0x0023b9,60,2);
+var threeGroup= new Model3DGroup(0,ground.y,0,'models/centerThreeGLTF/','scene.gltf','threes',10);
 
 init();
 animate();
 
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
+
 function init() {
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
     raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
-    console.log(camera);
 
     var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
     light.position.set( 0.5, 1, 0.75 );
     scene.add( light );
+
     controls = new THREE.PointerLockControls( camera );
     scene.add( controls.getObject() );
-   
-
-    const planeGeometry = new THREE.PlaneGeometry(150, 150, 480, 960);
-
-
-    const planeMaterial = new THREE.MeshPhongMaterial({
-    specular: 0xfb8717,         // Specular color of the material (light)
-    color: 0xFF4E50,            // Geometry color in hexadecimal
-    emissive: 0xFF4E50,         // Emissive color of the material (dark)
-    shininess: 30,              // How shiny the specular highlight is
-    shading: THREE.FlatShading  // NoShading, FlatShading or SmoothShading
-    });
-    
-
-    
-
-
-    planeGeometry.translate( 0, 0, 8 );
-    planeGeometry.rotateX( -Math.PI / 2 );//Fait pivoter le planeGeometry pour afficher sa partie visible à plat 
-    planeGeometry.computeBoundingBox();
-    
-    
-    //Génère aléatoirement des vecteurs pour avoir un terrain avec du relief, si les vecteurs se situes en dehors de la circonférence du cercle de l'ile ils ne sont pas modifiés
-    planeGeometry.vertices.map(function (vertex,index,vertices) {
-        const center= new THREE.Vector3;
-        if(vertex.distanceTo(planeGeometry.boundingBox.getCenter(center))<=planeGeometry.parameters.width/2){
-            vertex.x += .5 + Math.random() / 10;
-            vertex.y += .5 + Math.random() / 10;
-            vertex.z += .5 + Math.random() / 5;
-        }
-        
-        return vertex;
-        });
-        console.log(planeGeometry);
-
-        
-    
-
-    
-    // Update geometry.
-    planeGeometry.computeFaceNormals();
-
-
-
-    
-    
-    
- 
-    
-    console.log(planeGeometry.boundingBox.getCenter())
-
-        camera.position=planeGeometry.boundingBox.getCenter()
-    
-    // Create plane
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-
-    scene.add(plane);
-    console.log(plane);
 
     //Renderer
     renderer = new THREE.WebGLRenderer();
@@ -99,13 +43,26 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
+    
+    ground.initGround();
+    ocean.initOcean();
+    threeGroup.initModel(ground);
+
+    camera.position.y=ground.y/2;
+
+    scene.add(ground.planeThreeMesh);
+    scene.add(ocean.planeThreeMesh);
+    
 }
+
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
 function animate() {
+
     requestAnimationFrame( animate );
     if ( controlsEnabled ) {
         raycaster.ray.origin.copy( controls.getObject().position );//Fixe le raycaster sur la position de la caméra
@@ -133,6 +90,9 @@ function animate() {
             controls.getObject().position.y = 10;
             canJump = true;
         }
+
+        ocean.animateOcean();
+
         prevTime = time;
     }
     renderer.render( scene, camera );
