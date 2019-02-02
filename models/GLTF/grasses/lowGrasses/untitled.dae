@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.79.0 commit date:2018-03-22, commit time:14:10, hash:f4dc9f9d68b</authoring_tool>
+    </contributor>
+    <created>2019-01-22T23:14:08</created>
+    <modified>2019-01-22T23:14:08</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_effects>
+    <effect id="Grass_PatchGreen_001-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">1 1 1 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.1529632 0.273536 0.1271688 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Grass_PatchGreen_001-material" name="Grass_PatchGreen_001">
+      <instance_effect url="#Grass_PatchGreen_001-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh" name="Grass_Patch:pPlane6_Grass_Patch:Green_0.001">
+      <mesh>
+        <source id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-positions">
+          <float_array id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-positions-array" count="84">0.5787598 0.9282861 -1.573136 0.8567375 0.7343695 -0.8060958 1.60442 0.9546551 -1.323887 0.7989883 0.7472831 0.5912728 -0.01049154 0.6678711 0.9822943 0.9274141 0.8461347 1.814581 -1.527692 0.4589201 0.6403782 -1.474367 0.952661 -0.1131721 -2.379714 1.350766 0.6780332 -1.770674 0.9194663 -0.899532 -1.107299 1.071845 -1.492133 -2.261669 1.241493 -1.984875 0.1737234 0.1592741 -0.4313188 0.8567375 0.7343695 -0.8060958 0.5787598 0.9282861 -1.573136 -0.3316367 0.5314696 -1.209831 -0.5668755 -0.1416853 0.2405832 -0.01049154 0.6678711 0.9822943 0.7989883 0.7472831 0.5912728 0.07232761 0.2328379 -0.4310952 -1.157821 0.1029943 -0.9456052 -1.474367 0.952661 -0.1131721 -1.527692 0.4589201 0.6403782 -0.7742541 -0.3522482 -0.1420938 -0.2663109 0.2437574 -1.14272 -1.107299 1.071845 -1.492133 -1.770674 0.9194663 -0.899532 -0.7212314 0.3488837 -0.2584146</float_array>
+          <technique_common>
+            <accessor source="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-positions-array" count="28" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-normals">
+          <float_array id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-normals-array" count="60">-0.09145814 0.9570558 0.2750994 -0.1291343 0.989402 -0.06639349 0.6567507 0.6086246 0.445258 0.02420139 0.9613433 0.2742869 -0.2985621 0.8373067 0.4580157 -0.2985537 0.8373107 0.4580137 -0.2985764 0.8373055 0.4580085 -0.2985722 0.8373048 0.4580122 -0.4705218 0.8352214 -0.2846305 -0.4705064 0.8352189 -0.2846632 -0.4705151 0.8352168 -0.2846553 -0.4705288 0.835216 -0.2846347 0.8777199 0.468729 0.09950333 0.8777341 0.4686993 0.09951794 0.8777314 0.4687064 0.09950882 0.8777231 0.468725 0.09949493 0.4302604 0.831094 0.3523619 0.4302556 0.831082 0.3523958 0.4302618 0.8310832 0.3523855 0.430269 0.8310893 0.3523624</float_array>
+          <technique_common>
+            <accessor source="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-normals-array" count="20" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-vertices">
+          <input semantic="POSITION" source="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-positions"/>
+        </vertices>
+        <triangles material="Grass_PatchGreen_001-material" count="12">
+          <input semantic="VERTEX" source="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh-normals" offset="1"/>
+          <p>0 0 1 0 2 0 3 1 4 1 5 1 6 2 7 2 8 2 9 3 10 3 11 3 12 4 13 5 14 6 12 4 14 6 15 7 16 8 17 9 18 10 16 8 18 10 19 11 20 12 21 13 22 14 20 12 22 14 23 15 24 16 25 17 26 18 24 16 26 18 27 19</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="OSG_Scene" name="OSG_Scene">
+      <node id="RootNode__gltf_orientation_matrix__002" name="RootNode__gltf_orientation_matrix__002" type="NODE">
+        <matrix sid="transform">0.3224589 0 0 4.134407 0 0.322459 0 8.258228 0 0 0.322459 2.610107 0 0 0 1</matrix>
+        <node id="RootNode__model_correction_matrix__002" name="RootNode__model_correction_matrix__002" type="NODE">
+          <matrix sid="transform">0.9999999 -3.84401e-8 0 0 -1.23057e-7 1 0 -1.90735e-6 2.0711e-8 -1.92201e-8 1 0 0 0 0 1</matrix>
+          <node id="fc9c000a1c8b49b5a80ab8bd564b276a_fbx_001" name="fc9c000a1c8b49b5a80ab8bd564b276a_fbx_001" type="NODE">
+            <matrix sid="transform">0.9999999 5.16477e-15 3.84401e-8 0 -1.23057e-7 -1.34359e-7 -1 -1.90735e-6 2.0711e-8 1 -1.15139e-7 0 0 0 0 1</matrix>
+            <node id="RootNode_002" name="RootNode_002" type="NODE">
+              <matrix sid="transform">0.9999999 -4.00007e-15 3.84401e-8 0 2.0711e-8 1 1.94016e-8 0 1.23057e-7 0 0.9999999 0 0 0 0 1</matrix>
+              <node id="Grass_Patch_pPlane6_001" name="Grass_Patch_pPlane6_001" type="NODE">
+                <matrix sid="transform">1.554767 -6.21917e-15 5.97654e-8 9.53674e-7 3.22008e-8 1.554767 3.01649e-8 0 1.91325e-7 0 1.554766 18.99465 0 0 0 1</matrix>
+                <node id="Grass_Patch_pPlane6_Grass_Patch_Green_0_001" name="Grass_Patch_pPlane6_Grass_Patch_Green_0_001" type="NODE">
+                  <matrix sid="transform">1 0 0 0 0 1 0 -4.76837e-7 -5.97654e-8 0 1 0 0 0 0 1</matrix>
+                  <instance_geometry url="#Grass_Patch_pPlane6_Grass_Patch_Green_0_001-mesh" name="Grass_Patch_pPlane6_Grass_Patch_Green_0_001">
+                    <bind_material>
+                      <technique_common>
+                        <instance_material symbol="Grass_PatchGreen_001-material" target="#Grass_PatchGreen_001-material"/>
+                      </technique_common>
+                    </bind_material>
+                  </instance_geometry>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#OSG_Scene"/>
+  </scene>
+</COLLADA>

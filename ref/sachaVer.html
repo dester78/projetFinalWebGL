@@ -40,12 +40,12 @@
 		<script src="libs/three.js"></script>
 		<script src="libs/OrbitControls.js"></script>
 
-		<script src="libs/dat.gui.min.js"></script>
+		<script src="../../examples/js/libs/dat.gui.min.js"></script>
 
-		<script src="libs/WebGL.js"></script>
+		<script src="../../examples/js/WebGL.js"></script>
 
-		<script src="libs/GLTFLoader.js"></script>
-		<script src="libs/DRACOLoader.js"></script>
+		<script src="../../examples/js/loaders/GLTFLoader.js"></script>
+		<script src="../../examples/js/loaders/DRACOLoader.js"></script>
 
 
 		
@@ -106,6 +106,13 @@
 				spotLight.shadow.camera.far = 200;
 				scene.add( spotLight );
 
+
+				var sphereGeometry = new THREE.SphereBufferGeometry( 5, 32, 32 );
+var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0xff0000 } );
+var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+sphere.castShadow = true; //default is false
+sphere.receiveShadow = false; //default
+scene.add( sphere );
 				var planeMaterial = new THREE.MeshPhongMaterial( { color: 0x808080, dithering: true } );
 
 				var planeGeometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
@@ -119,7 +126,7 @@
 
 				var loader = new THREE.GLTFLoader();
 				loader.setDRACOLoader( new THREE.DRACOLoader() );
-				THREE.DRACOLoader.setDecoderPath( 'libs/draco' )
+				THREE.DRACOLoader.setDecoderPath( '../../examples/js/libs/draco' )
 				
 				loader.setPath('models/centerThreeGLTF/');
 

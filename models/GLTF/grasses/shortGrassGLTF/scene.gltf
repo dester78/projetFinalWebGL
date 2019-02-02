@@ -1,0 +1,246 @@
+{
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 585,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 585,
+            "max" : [
+                60.92970275878906,
+                3.2279417514801025,
+                27.920026779174805
+            ],
+            "min" : [
+                44.1526985168457,
+                1.2995420694351196,
+                8.411726951599121
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 585,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 585,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5123,
+            "count" : 1365,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 5,
+            "componentType" : 5126,
+            "count" : 63,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 6,
+            "componentType" : 5126,
+            "count" : 63,
+            "max" : [
+                66.33414459228516,
+                4.060741901397705,
+                26.018814086914062
+            ],
+            "min" : [
+                52.571041107177734,
+                2.2222418785095215,
+                12.44451904296875
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 7,
+            "componentType" : 5126,
+            "count" : 63,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 8,
+            "componentType" : 5126,
+            "count" : 63,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 9,
+            "componentType" : 5123,
+            "count" : 147,
+            "type" : "SCALAR"
+        }
+    ],
+    "asset" : {
+        "generator" : "Khronos Blender glTF 2.0 I/O",
+        "version" : "2.0"
+    },
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 9360,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 7020,
+            "byteOffset" : 9360
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4680,
+            "byteOffset" : 16380
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 7020,
+            "byteOffset" : 21060
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2730,
+            "byteOffset" : 28080
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1008,
+            "byteOffset" : 30812
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 756,
+            "byteOffset" : 31820
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 504,
+            "byteOffset" : 32576
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 756,
+            "byteOffset" : 33080
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 294,
+            "byteOffset" : 33836
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 34132,
+            "uri" : "scene.bin"
+        }
+    ],
+    "extensions" : {},
+    "materials" : [
+        {
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.005850152112543583,
+                    0.34331390261650085,
+                    0.0001,
+                    1
+                ],
+                "metallicFactor" : 1,
+                "roughnessFactor" : 1
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Mesh_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "COLOR_0" : 0,
+                        "NORMAL" : 3,
+                        "POSITION" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 4
+                },
+                {
+                    "attributes" : {
+                        "COLOR_0" : 5,
+                        "NORMAL" : 8,
+                        "POSITION" : 6,
+                        "TEXCOORD_0" : 7
+                    },
+                    "indices" : 9,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Object_3",
+            "scale" : [
+                0.13410671055316925,
+                0.13410671055316925,
+                0.13410671055316925
+            ],
+            "translation" : [
+                -19.21083641052246,
+                1.013010025024414,
+                -2.709693431854248
+            ]
+        },
+        {
+            "children" : [
+                0
+            ],
+            "name" : "grass.obj.cleaner.materialmerger.gles"
+        },
+        {
+            "children" : [
+                1
+            ],
+            "name" : "RootNode (model correction matrix)"
+        },
+        {
+            "children" : [
+                2
+            ],
+            "name" : "RootNode (gltf orientation matrix)",
+            "scale" : [
+                0.349277138710022,
+                0.34927722811698914,
+                0.34927722811698914
+            ],
+            "translation" : [
+                -6.293692588806152,
+                10.595434188842773,
+                1.1545488834381104
+            ]
+        }
+    ],
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "OSG_Scene",
+            "nodes" : [
+                3
+            ]
+        }
+    ]
+}

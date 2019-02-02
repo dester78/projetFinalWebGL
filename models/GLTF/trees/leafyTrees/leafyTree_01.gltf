@@ -358,7 +358,7 @@
   "buffers": [
     {
       "byteLength": 68952,
-      "uri": "scene.bin"
+      "uri": "leafyTree_01.bin"
     }
   ],
   "materials": [
@@ -388,7 +388,7 @@
         0,
         0
       ],
-      "name": "leaf",
+      "name": "leaf_green.002",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.032287530600000003,
@@ -407,7 +407,7 @@
         0,
         0
       ],
-      "name": "leaf",
+      "name": "leaf_green",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.0218616053,
@@ -426,7 +426,7 @@
         0,
         0
       ],
-      "name": "leaf",
+      "name": "leaf_green.001",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.018905723499999999,
@@ -445,7 +445,7 @@
         0,
         0
       ],
-      "name": "leaf",
+      "name": "leaf_green.004",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0,
@@ -464,7 +464,7 @@
         0,
         0
       ],
-      "name": "leaf",
+      "name": "leaf_green.003",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           0.033206474,
@@ -855,7 +855,7 @@
   "scene": 0,
   "scenes": [
     {
-      "name": "three",
+      "name": "OSG_Scene",
       "nodes": [
         0
       ]

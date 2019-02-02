@@ -1,0 +1,41 @@
+{
+    "uri": "lowGrass_01.gltf",
+    "mimeType": "model/gltf+json",
+    "validatorVersion": "2.0.0-dev.2.7",
+    "validatedAt": "2019-01-23T16:32:22.567Z",
+    "issues": {
+        "numErrors": 1,
+        "numWarnings": 0,
+        "numInfos": 0,
+        "numHints": 0,
+        "messages": [
+            {
+                "code": "FILE_NOT_FOUND",
+                "message": "File not found. Node Exception: Error: ENOENT: no such file or directory, open 'c:\\Apache24\\www\\three.js-master\\ProjetFinal\\models\\GLTF\\grasses\\lowGrasses\\scene.bin'",
+                "severity": 0,
+                "pointer": "/buffers/0/uri"
+            }
+        ],
+        "truncated": false
+    },
+    "info": {
+        "version": "2.0",
+        "generator": "Sketchfab-3.18.7",
+        "resources": [
+            {
+                "pointer": "/buffers/0",
+                "mimeType": "application/gltf-buffer",
+                "storage": "external",
+                "uri": "scene.bin"
+            }
+        ],
+        "hasAnimations": false,
+        "hasMaterials": true,
+        "hasMorphTargets": false,
+        "hasSkins": false,
+        "hasTextures": false,
+        "hasDefaultScene": true,
+        "primitivesCount": 1,
+        "maxAttributesUsed": 3
+    }
+}
