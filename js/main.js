@@ -1,26 +1,35 @@
 
-var camera, scene, renderer, isOnObject,season;
+var camera, scene, renderer, isOnObject,season,seasonTransitionCountern;
 var objects = [];
+var arrModels=[];
+var arrControledRandomModel=[];
 var raycaster;
 
-season=1;
+//seasonTransitionCounter varie de 1 à 10 et permet de faire des transitions plus douce entre été et hiver
+seasonTransitionCounter=0;
+season=2;
 
 // POINTERLOCK FUNCTIONS
 compatibilityControl();
 initWindowListener();
 initMovementListener();
 
-var ground= new Ground(0,-40,0,40,400,400,480,960,null,0xFF4E50,0xFF4E50,30);
+//Création des objets de la scène
+var ground= new Ground(0,-40,0,40,500,500,480,960,null,0xFF4E50,0xFF4E50,30);
+var snowGround= new SnowGround(ground.x,ground.y-0.1,ground.z,ground.height,ground.planeWidth-1,ground.planeHeight-1,ground.widthSegment-1,ground.heightSegment-2,null,0xE4F5F5,0xc9cacf,0);
 var ocean= new Ocean(0,ground.y+ground.height*0.80,0,0,1500,1500,90,90,30,0x00aeff,0x0023b9,60,2);
-var leafyTreeGroup_01= new Model3DGroup(0,ground.y+ground.height,0,0,'models/GLTF/trees/leafyTrees/','leafyTree_01.gltf','leafyTrees_01',20,0.5);
-// var fisherManHouse_01= new Model3DGroup(0,ground.y+ground.height-4,0,0.1,'models/GLTF/buildings/fisherManHouse_01/','fisherManHouse_01.gltf','fisherManHouse_01',1,1,season);
-var fisherManHouse_02= new Model3DGroup(0,ground.y+ground.height-2,0,0.1,'models/GLTF/buildings/fisherManHouse_02/','fisherManHouse_02.gltf','fisherManHouse_02',1,1,season);
-var lowGrasses_01= new Model3DGroup(0,ground.y+ground.height+1,0,0,'models/GLTF/grasses/lowGrasses/','lowGrass_01.gltf','lowGrasses_01',500,0.1,season);
-var highGrasses_01= new Model3DGroup(0,ground.y+ground.height-2,0,0.008,'models/GLTF/grasses/highGrasses/','highGrass_01.gltf','highGrasses_01',100,0.1,season);
+arrModels[1]=new Model3DGroup(0,ground.y+ground.height,0,0,'models/GLTF/trees/leafyTrees/','leafyTree_01.gltf','leafyTrees_01',15,0.5,1);
+// var fisherManHouse_01= new Model3DGroup(0,ground.y+ground.height-4,0,0.1,'models/GLTF/buildings/fisherManHouse_01/','fisherManHouse_01.gltf','fisherManHouse_01',1,1);
+arrModels[0]= new Model3DGroup(0,ground.y+ground.height-2,0,0.1,'models/GLTF/buildings/fisherManHouse_02/','fisherManHouse_02.gltf','fisherManHouse_02',1,1,-1);
+arrModels[2]= new Model3DGroup(0,ground.y+ground.height+1,0,0,'models/GLTF/grasses/lowGrasses/','lowGrass_01.gltf','lowGrasses_01',500,0.1,0);
+arrModels[3]= new Model3DGroup(0,ground.y+ground.height-2,0,0.008,'models/GLTF/grasses/highGrasses/','highGrass_01.gltf','highGrasses_01',100,0.1,0);
+
+// arrControledRandomModel.push(leafyTreeGroup_01);
 
 
 init();
-buildGui();
+// buildGui();
+controlRandomModelPosition();
 animate();
 
 var prevTime = performance.now();
@@ -31,11 +40,6 @@ function init() {
     raycaster = new THREE.Raycaster( new THREE.Vector3(0,0,0), new THREE.Vector3( 0, - 1, 0 ),-10 , 10);
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
-
-    // var light = new THREE.HemisphereLight( 0xeeeeff, ground.color, 1 );
-    // light.position.set( 0.5, 1, 0.75 );
-    // scene.add( light );
-	
 
 	var ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
 	scene.add( ambient );
@@ -60,17 +64,11 @@ function init() {
 	controls.getObject().position.y=ground.height+2
 
     ground.initGround();
+    snowGround.initGround();
 	ocean.initOcean();
-    // fisherManHouse_01.initModel(ground);
-	fisherManHouse_02.initModel(ground);
-    
-	leafyTreeGroup_01.initModel(ground);
-	lowGrasses_01.initModel(ground);
-	highGrasses_01.initModel(ground);
-
-	objects.push(ground.invisibleMeshGround);
 	
-
+    //Initialisation de la maison en premier car sa position est fixe et la déterminer aléatoirement est un enfer !!!! 
+    arrModels[0].initModel(ground);
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor( 0xffffff );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -79,7 +77,9 @@ function init() {
 	document.body.appendChild( renderer.domElement );
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	renderer.gammaInput = true;
-	renderer.gammaOutput = true;
+    renderer.gammaOutput = true;
+    
+    snowTimeInition=performance.now();
 
     window.addEventListener( 'resize', onWindowResize, false );
 }
@@ -122,7 +122,26 @@ function animate() {
 		}
         ocean.animateOcean();
 
+        snowGround.animateSnowGround(ground.planeThreeMesh.position.y);
+
         prevTime = time;
     }
     renderer.render( scene, camera );
 }
+
+window.setInterval(iterateSeasonTransition,1000);
+
+//Fait varier la transition entre été et hiver 
+function iterateSeasonTransition(){
+
+    if(season==2&&seasonTransitionCounter<10){
+        seasonTransitionCounter+=0.5
+
+    }
+    else if(season==1&&seasonTransitionCounter>1){
+        seasonTransitionCounter-=0.5
+    }
+}
+
+
+

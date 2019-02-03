@@ -54,11 +54,10 @@ class PlaneObjects {
             emissive: this.emissive,         // Emissive color of the material (dark)
             shininess: this.shininess,              // How shiny the specular highlight is
             flatShading: THREE.FlatShading,
-            transparent:false // NoShading, FlatShading or SmoothShading
+            transparent:true // NoShading, FlatShading or SmoothShading
         }); 
     }
     createPlaneThreeMesh(){
-        console.log(this.planeThreeMesh);
         this.planeThreeMesh= new THREE.Mesh(this.planeGeometry, this.planeMaterial);
         this.planeThreeMesh.receiveShadow=true;
         scene.add(this.planeThreeMesh);
@@ -79,6 +78,7 @@ class Ground extends PlaneObjects{
     }
 
     get invisibleMeshGround(){return this._invisibleMeshGround;}
+
     get groundCircleRadius(){
         return this.planeGeometry.parameters.width/2.5;
     }
@@ -89,10 +89,6 @@ class Ground extends PlaneObjects{
 
     set invisibleMeshGround(myInvisibleMeshGround){
         this._invisibleMeshGround=myInvisibleMeshGround;
-    }
-
-    set snowMeshGround(mySnowMeshGround){
-        this._invisibleSnowGround=mySnowMeshGround;
     }
 
     initGround(){
@@ -116,19 +112,6 @@ class Ground extends PlaneObjects{
         this.invisibleMeshGround.position.y=this.height+this.y;
     }
 
-    createSnowMeshGround(){
-        var geometry = new THREE.CircleGeometry( this.groundCircleRadius, 32 );
-        var material = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-        this.invisibleMeshGround = new THREE.Mesh( geometry, material );
-        this.invisibleMeshGround.visible=false;
-        scene.add( this.invisibleMeshGround );
-        this.invisibleMeshGround.rotateX( -Math.PI / 2 );
-        // this.invisibleMeshGround.position.y==this.height+this.y;
-        this.invisibleMeshGround.position.y=this.height+this.y;
-
-        
-    }
-
     //Génère aléatoirement des vecteurs pour avoir un terrain avec du relief,
     //si les vecteurs se situes en dehors de la circonférence du cercle de l'ile ils ne sont pas modifiés
     setCircularGroundVertices(){
@@ -140,9 +123,9 @@ class Ground extends PlaneObjects{
         this.planeGeometry.vertices.map(function (vertex) {
 
         if(vertex.distanceTo(center)<=circleRadius){
-            vertex.x += .5 + Math.random() / 10;
-            vertex.y += .5 + Math.random() / 10 + height;
-            vertex.z += .5 + Math.random() / 10 ;
+            vertex.x += 0.5 + Math.random() / 10;
+            vertex.y += 0.5 + Math.random() / 10 + height;
+            vertex.z += 0.5 + Math.random() / 10 ;
         }
         return vertex;
         });
@@ -151,18 +134,43 @@ class Ground extends PlaneObjects{
         this.planeGeometry.computeFaceNormals();
     }
 }
+class SnowGround extends Ground{
 
+
+    constructor( myX, myY, myZ,myHeight, myPlaneWidth, myPlaneHeight, myWidthSegment, myHeightSegment,mySpecular, myColor,myEmissive,myShininess) {
+        super(myX, myY, myZ,myHeight, myPlaneWidth, myPlaneHeight, myWidthSegment, myHeightSegment,mySpecular, myColor,myEmissive,myShininess);
+    }
+
+
+
+    animateSnowGround(summerGroundY){
+
+        if(season===2){
+            if(this.planeThreeMesh.position.y<summerGroundY+1){
+                this.planeThreeMesh.position.y+=seasonTransitionCounter/10000;
+            }
+        }
+
+        if(season===1){
+            if(this.planeThreeMesh.position.y>summerGroundY-1){
+                this.planeThreeMesh.position.y-=seasonTransitionCounter/10000;
+            }
+        }
+    }
+    
+
+        
+       
+}
 class Ocean extends PlaneObjects{
 
-    constructor( myX, myY, myZ,myHeight, myPlaneWidth, myPlaneHeight, myWidthSegment, myHeightSegment,mySpecular, myColor,myEmissive,myShininess,mySeason) {
+    constructor( myX, myY, myZ,myHeight, myPlaneWidth, myPlaneHeight, myWidthSegment, myHeightSegment,mySpecular, myColor,myEmissive,myShininess) {
         super(myX, myY, myZ,myHeight, myPlaneWidth, myPlaneHeight, myWidthSegment, myHeightSegment,mySpecular, myColor,myEmissive,myShininess);
-        this._season=mySeason;
         this._animationCounter=0;
     }
 
-    get season(){return this._season};
+
     get animationCounter(){return this._animationCounter};
-    set season(mySeason){this._season=mySeason};
     set animationCounter(myAnimationCounter){this._animationCounter=myAnimationCounter};
     
 
@@ -188,20 +196,22 @@ class Ocean extends PlaneObjects{
     animateOcean(){
 
         var i = 0;
+
+
         for (var ix = 0; ix < this.widthSegment; ix++) {
             for (var iy = 0; iy < this.heightSegment; iy++) {
                 this.planeGeometry.vertices[i++].z =
-                (Math.sin(ix + this.animationCounter + this.season))+ (Math.cos(iy + this.animationCounter +this.season))+this.y //Permet de régler la force de l'océan
+                (Math.sin(ix + this.animationCounter )*seasonTransitionCounter/1.5)+ (Math.cos(iy + this.animationCounter)*seasonTransitionCounter/1.5)+this.y //Permet de régler la force de l'océan
                 this.planeGeometry.verticesNeedUpdate = true;
             }
         }
-        return this.animationCounter += 0.015*(this.season*this.season);
+        return this.animationCounter += 0.015*seasonTransitionCounter/5;
     }
 }
 
 
 class Model3DGroup{
-    constructor(myX, myY, myZ,myScale,myFilePath,myFileName,myName,myNumberOfElement,myDistribution,myDistributionControl,mySeason){
+    constructor(myX, myY, myZ,myScale,myFilePath,myFileName,myName,myNumberOfElement,myDistribution,myDistributionControl){
         this._x = myX;
         this._y=myY;
         this._z=myZ;
@@ -212,7 +222,6 @@ class Model3DGroup{
         this._numberOfElement=myNumberOfElement;
         this._distribution=myDistribution;
         this._distributionControl=myDistributionControl;
-        this._season=mySeason;
         this._manager=new THREE.LoadingManager();
     }
 
@@ -227,7 +236,6 @@ class Model3DGroup{
     get manager(){return this._manager;}
     get distribution(){return this._distribution;}
     get distributionControl(){return this._distributionControl}
-    get season(){return this._season;}
 
     get collisionDistance(){
         var box = new THREE.Box3().setFromObject(this.modelGroup.children[0]);
@@ -242,17 +250,39 @@ class Model3DGroup{
 
     initModel(ground){
 
-        var modelGroup=this;
+        var element=this;
+        var distributionControl=this.distributionControl;
+        console.log(distributionControl);
         this.createModelGroup();
         this.loadModel();
         this.manager.onLoad=function(){
-            if(modelGroup.scale!=0){
-                modelGroup.proportionalScale();
-                console.log(modelGroup);
-                // modelGroup.modelGroup.position.y+=10
+            if(element.scale!=0){
+                element.proportionalScale();
+                // element.element.position.y+=10
             }
-            modelGroup.cloneGroupElements()
-            modelGroup.randomizePositionInModelGroup(ground);
+            element.cloneGroupElements();
+
+            if(distributionControl==-1){
+                
+                element.modelGroup.children[0].position.set(ground.x+12,ground.y+ground.height,ground.z+18);
+                arrControledRandomModel.push(element.modelGroup.children[0])
+                for(var i=1; i<arrModels.length;i++){
+                    arrModels[i].initModel(ground);
+                }
+            }
+            if(distributionControl==0){
+                
+                element.randomizePositionInModelGroup(ground);
+            }
+            if(distributionControl==1){
+                var sizeArrBefore= arrControledRandomModel.length;
+                for(var i=0;i<element.modelGroup.children.length;i++){
+                    arrControledRandomModel.push(element.modelGroup.children[i]);
+                }   
+                controlRandomModelPosition(sizeArrBefore);
+            }
+            
+            
         }
     }
     createModelGroup(){
@@ -293,8 +323,6 @@ class Model3DGroup{
     }
 
     loadModel(){   
-
-        var scale=this.scale;
         var modelGroupName=this.name;
         var loader = new THREE.GLTFLoader(this.manager);
         loader.setDRACOLoader( new THREE.DRACOLoader() );
@@ -311,8 +339,6 @@ class Model3DGroup{
                     if(child.name=="visibleFalse"){
                         child.visible=false
                     }
-                    console.log(child);
-                    console.log(child.name);
                 }
             } );
 
@@ -332,9 +358,8 @@ class Model3DGroup{
         return
     }
 
-    randomizePositionInModelGroup(ground){
-
-        
+    randomizePositionInModelGroup(){
+     
         for(var i = 0 ; i<this.modelGroup.children.length; i ++){
 
             var collisionBool=true; 
@@ -345,8 +370,7 @@ class Model3DGroup{
                 this.modelGroup.children[i].rotation.y=Math.random()*sign*Math.cos(i*(this.modelGroup.children.length)*180/Math.PI);
                 this.modelGroup.children[i].position.x=Math.random()*ground.groundCircleRadius*sign;
                 this.modelGroup.children[i].position.z=Math.random()*ground.groundCircleRadius*sign*Math.cos(i*(this.modelGroup.children.length)*180/Math.PI);
-
-                if(this.modelGroup.children[i].position.distanceTo(ground.groundCenter)<ground.groundCircleRadius){
+                if(this.modelGroup.children[i].position.distanceTo(ground.groundCenter)<ground.groundCircleRadius*0.9){
                     collisionBool=false
                 }        
             }
@@ -361,6 +385,55 @@ class Model3DGroup{
     }
 
 }
+
+function controlRandomModelPosition(sizeArrBefore){
+
+
+    
+    console.log(arrControledRandomModel.length);
+    if(arrControledRandomModel.length>0){
+        for(var i=arrControledRandomModel.length-1;i>=sizeArrBefore;i--){
+
+            var sign=i%2==0?1:-1
+            arrControledRandomModel[i].rotation.y=Math.random()*sign*Math.cos(i*180/Math.PI);
+            arrControledRandomModel[i].position.x=Math.random()*ground.groundCircleRadius*sign*0.9;
+            arrControledRandomModel[i].position.z=Math.random()*ground.groundCircleRadius*sign*Math.cos(i*180/Math.PI)*0.9;
+            var currentObjectBox=new THREE.Box3().setFromObject(arrControledRandomModel[i]);
+                
+                // console.log(arrControledRandomModel[i]);
+        
+                for(var j=arrControledRandomModel.length-1;j>=0;j--){
+        
+                    
+                    console.log(arrControledRandomModel[i]);
+                    console.log(j);
+
+                        var otherObjectBox=new THREE.Box3().setFromObject(arrControledRandomModel[j]);
+                        var currentBoxCenter= new THREE.Vector3()
+                        var currentBoxSize= new THREE.Vector3()
+                        currentObjectBox.getCenter(currentBoxCenter);
+                        currentObjectBox.getSize(currentBoxSize);
+
+
+                        if(i!=j&&currentObjectBox.intersectsBox(otherObjectBox)||currentBoxCenter.distanceTo(ground.groundCenter)+currentBoxSize.x+currentBoxSize.z>ground.circleRadius*0.9){
+                            console.log("ATTENTION")
+                            var sign=i%2==0?1:-1
+                            arrControledRandomModel[i].rotation.y=Math.random()*sign*Math.cos(i*180/Math.PI);
+                            arrControledRandomModel[i].position.x=Math.random()*ground.groundCircleRadius*sign*0.9;
+                            arrControledRandomModel[i].position.z=Math.random()*ground.groundCircleRadius*sign*Math.cos(i*180/Math.PI)*0.9;
+                            var currentObjectBox=new THREE.Box3().setFromObject(arrControledRandomModel[i]);
+                                
+                            j=arrControledRandomModel.length-1
+                            
+            
+                        }    
+                }
+            
+        }
+    }
+    
+}
+
 
 // if(index!=0&&distributionControl==true){
 //     
